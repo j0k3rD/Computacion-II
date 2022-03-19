@@ -1,28 +1,28 @@
 ## Calculadora 
 
-import sys
+import argparse
+from re import A
 
-op = sys.argv[1]
-val1= sys.argv[2]
-val2= sys.argv[3]
-
+parser = argparse.ArgumentParser()
+parser.add_argument('-o')
+parser.add_argument('-n')
+parser.add_argument('-m')
+args = parser.parse_args()
 
 try:
-    op= str(op)
-    val1= float(val1)
-    val2= float(val2)
-    total = 0
-
-    if op == "*":
-        total = val1 * val2
-    elif op == "+":
-        total = val1 + val2
-    elif op == "-":
-        total = val1 - val2
-    elif op == "/":
-        total = val1 / val2
-
-    print("El resultado de la operacion es: ", total)
-
+    
+    if args.o == "*":
+        total = args.n * args.m
+        print("El resultado de la operacion es: ", total)
+    elif args.o == "+":
+        total = args.n + args.m
+        print("El resultado de la operacion es: ", total)
+    elif args.o == "-":
+        total = args.n - args.m
+        print("El resultado de la operacion es: ", total)
+    elif args.o == "/":
+        total = args.n / args.m
+        print("El resultado de la operacion es: ", total)
+        
 except ValueError:
     print("Error en los argumentos: Reviselos e intente de nuevo.")
