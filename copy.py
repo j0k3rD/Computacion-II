@@ -21,17 +21,16 @@ def main():
 
 def copy(args):
     args1 = args.i
-    arg2 = args.o
-    
+
     if os.path.exists(args1) == True:
         exist = open(args.i, "r") 
         content = exist.read()
         print(content)
 
         with open(args.i, "r") as read_file:
-            with open(args.o, "w") as args.o:
+            with open(args.o, "w") as write_file:
                 for line in read_file:
-                    args.o.write(line)
+                    write_file.write(line)
                     return "La copia se ha realizado correctamente!"
     else:
         print("El archivo no existe!")
