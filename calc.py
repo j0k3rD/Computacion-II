@@ -35,3 +35,4 @@ if __name__=='__main__':
     main()
 
 ##Como no funcionaba el printeo del resultado se buscó el por qué y se llegó a la conclusión de añadir la clase main.
+#s

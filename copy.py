@@ -23,7 +23,7 @@ def copy(args):
     args1 = args.i
 
     if os.path.exists(args1) == True:
-        exist = open(args.i, "r") 
+        exist = open(args.i, "r")
         content = exist.read()
         print(content)
 
