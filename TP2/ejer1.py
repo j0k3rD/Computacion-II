@@ -8,7 +8,6 @@ from asyncio.subprocess import STDOUT
 from concurrent.futures import process
 import os
 from re import A
-import sys
 from subprocess import Popen, PIPE, STDOUT
 import time
 
@@ -17,12 +16,12 @@ now = time.strftime("%c")
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c',type=str,help="Elija el comando que quiera ejecutar. EJ: 'ls -l', 'ip a'")
+    parser.add_argument('-c',type=str,help="Elija el comando que quiera ejecutar. EJ: 'ls', 'ip'")
     parser.add_argument('-f',type=str,help="Pase un archivo como argumento. O simplemente el nombre para crear uno")
     parser.add_argument('-l',type=str,help="Pase un archivo como argumento. O simplemente el nombre para crear uno")
     args = parser.parse_args()
     func_exist(args)
-    func_arch(args)
+    func_files(args)
     
 
 def func_exist(args):
@@ -33,14 +32,17 @@ def func_exist(args):
         file_f = open("/home/aaron/Documents/Computacion II/TPS/TP2/{}.txt".format(args.f), "w")
         return "Archivo f creado con exito"
     
+## Se hizo con dos ifs por separado ya que si lo intentamos hacer en uno solo, se creara el primero y terminara
+#  la ejecucion del mismo sin crear el segundo.
+
     if os.path.exists(args.l):
         file_l = open("/home/aaron/Documents/Computacion II/TPS/TP2/{}.txt".format(args.l), "r+")
     else:
         file_l = open("/home/aaron/Documents/Computacion II/TPS/TP2/{}.txt".format(args.l), "w")
-        return "Archivo f creado con exito"
+        return "Archivo l creado con exito"
 
 
-def func_arch(args):
+def func_files(args):
 
     p = Popen(["{}".format(args.c)], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
@@ -63,8 +65,9 @@ if __name__=='__main__':
     main()
 
 
-## Bibliografias usadas: https://www.saltycrane.com/blog/2008/09/how-get-stdout-and-stderr-using-python-subprocess-module/
+## Bibliografias usadas: 
+#  Para entender un poco mas sobre las entradas: https://www.saltycrane.com/blog/2008/09/how-get-stdout-and-stderr-using-python-subprocess-module/
 #  Tenia un problema ya que el stderr no me lo estaba printeando bien y ademas cuando se pasaba un comando bien tambien pasaba
-# como error. Este video ayudo a entender el PIPE y comunicate() para generar las dos salidas.
-# https://www.youtube.com/watch?v=VlfLqG_qjx0
+# como error. Este video ayudo a entender el PIPE y comunicate() para generar las dos salidas: https://www.youtube.com/watch?v=VlfLqG_qjx0
+#  Para importar la fecha y hora: https://pythondiario.com/2014/05/obtener-fecha-y-hora-actual-en-python.html
                         
