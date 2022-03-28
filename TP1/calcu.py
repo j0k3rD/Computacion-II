@@ -25,7 +25,7 @@ def calculate():
         elif opt in ['-m']:
             m = int(arg)
 
-    if operation == "*":
+    if operation == "x":
         total = n*m
     elif operation == "+":
         total = n+m
