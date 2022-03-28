@@ -14,7 +14,7 @@ def calculate():
 
     opts, args = getopt.getopt(argv, 'o:n:m:')
     # print("Opciones: ", opt)
-    # print("Argumentos: ",arg)
+    #print("Argumentos: ",arg)
 
 
     for opt, arg in opts:
