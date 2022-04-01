@@ -1,5 +1,5 @@
 ## Computacion-II
-Prof. Diego Córdoba
+Prof. Diego Córdoba - @d1cor
 
   ##
 
