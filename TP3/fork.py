@@ -7,7 +7,9 @@
 import argparse
 from multiprocessing.connection import wait
 import os
-
+import subprocess
+from time import sleep
+import time
 
 
 def main():
@@ -16,7 +18,6 @@ def main():
     # parser.add_argument('-h',type=str,help="Ayuda.")
     parser.add_argument('-v',type=str,help="Modo Verboso.")
     args = parser.parse_args()
-    print(args.n)
     if args.v == None:
         print("Ejecucion SIN Modo Verboso")
         fork_F(args)
@@ -27,21 +28,24 @@ def main():
         # p_son(args)
 
 
-def fork_F(args):
-    for i in range(args.n):
-        os.fork()
-        # ret = os.fork()
-        # if ret == 0:
-        #     p_son()            
-# def p_son(args):
-    suma = 0
-    while i <= os.getpid():
-        if i % 2 == 0:
-            suma = suma+i
-        i+=1
-            # for i in range(args.n):
-            #     os.wait()
-    print("PID: ", os.getpid(), "-", "PPID: ", os.getppid(), ":", suma)
+def fork_F(args):        
+        # for i in range(0, args.n):
+        ret = os.fork()
+        if ret == 0:
+            # print(subprocess.check_output(["ps", "fax"], universal_newlines=True))
+            # os.wait()
+            # time.sleep(1)
+            suma = 0
+            i = 0
+            while i <= os.getpid():
+                if i % 2 == 0:
+                    suma = suma+i
+                i+=1
+            print("PID: ", os.getpid(), "-", "PPID: ", os.getppid(), ":", suma)
+        else:
+            time.sleep(0.0001)
+            print("Soy el padre")
+            os.wait()
 
 
 def verbose(args):
