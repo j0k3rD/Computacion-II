@@ -29,13 +29,13 @@ def main():
     else:
         print("Ejecutado SIN ayuda.\n")
 
-    if args.v:
+    if args.n and args.v:
         print("Ejecucion CON Modo Verboso\n")
         verbose(args)
+    elif args.n:
+        fork_F(args)
     else:
         print("Ejecucion SIN Modo Verboso\n")
-        fork_F(args)
-
 
 
 def fork_F(args):        
@@ -74,12 +74,12 @@ def verbose(args):
                 if i % 2 == 0:
                     suma = suma+i
                 i+=1
-            # time.sleep(2)
             print(ENDING, os.getpid())
             print("PID: ", os.getpid(), "-", "PPID: ", os.getppid(), ":", suma)
             os._exit(0)
+            # time.sleep(2)
         else:
-            time.sleep(0.0001)
+            time.sleep(0.01)
             os.wait()
 
 
