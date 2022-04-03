@@ -47,10 +47,12 @@ def func_files(args):
     p = Popen(["{}".format(args.c)], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
 
+    #universal_newlines=True... para que los n/ los escriba como enter
+
 
     if p.returncode == 0:
         with open("/home/aaron/Documents/Computacion II/TPS/TP2/{}.txt".format(args.f), "w+") as fd:
-            fd.write(str(out))
+            fd.write(str(out), universal_newlines=True)
 
         cmd = str(args.c)
         txt = "Fecha y Hora: '{}'. Comando: '{}' ejecutado correctamente.".format(now, cmd)
