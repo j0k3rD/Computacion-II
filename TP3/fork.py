@@ -38,6 +38,7 @@ def main():
         print("Ejecucion SIN Modo Verboso\n")
 
 
+
 def fork_F(args):        
     for i in range(args.n):
         ret = os.fork()
@@ -45,42 +46,39 @@ def fork_F(args):
             # print(subprocess.check_output(["ps", "fax"], universal_newlines=True))
             suma = 0
             i = 0
-            while i <= os.getpid():
-                if i % 2 == 0:
-                    suma = suma+i
-                i+=1
-            print("PID: ", os.getpid(), "-", "PPID: ", os.getppid(), ":", suma)
-            # time.sleep(2)
+            operation(args)
             os._exit(0)
         else:
             time.sleep(0.0001)
             os.wait()
 
 
+def operation(args):
+    suma = 0
+    i = 0
+    while i <= os.getpid():
+        if i % 2 == 0:
+            suma = suma+i
+        i+=1
+    print("PID: ", os.getpid(), "-", "PPID: ", os.getppid(), ":", suma)
+
+
 def verbose(args):
     STARTING = "Starting process"
     ENDING = "Ending process"
     
-
     for i in range(args.n):
         ret = os.fork()
-        # for i in range(0, args.n):
         if ret == 0:
             print(STARTING, os.getpid())
-            # print(subprocess.check_output(["ps", "fax"], universal_newlines=True))
-            suma = 0
-            i = 0
-            while i <= os.getpid():
-                if i % 2 == 0:
-                    suma = suma+i
-                i+=1
-            print(ENDING, os.getpid())
-            print("PID: ", os.getpid(), "-", "PPID: ", os.getppid(), ":", suma)
-            os._exit(0)
-            # time.sleep(2)
-        else:
-            time.sleep(0.01)
-            os.wait()
+            time.sleep(1)
+            operation(args)
+            time.sleep(1)
+            print(ENDING, os.getpid())    
+            os._exit(0)          
+    time.sleep(3)
+    os.wait()
+
 
 
 def help_F(args):
@@ -96,6 +94,3 @@ def help_F(args):
 
 if __name__=='__main__':
     main()
-
-#
-#
