@@ -45,17 +45,14 @@ def fork_F(args):
         ret = os.fork()
         if ret == 0:
             # print(subprocess.check_output(["ps", "fax"], universal_newlines=True))
-            suma = 0
-            i = 0
             operation(args)
             os._exit(0)
-        else:
-            time.sleep(0.0001)
             #Hacerlo de esta forma no tiene sentido ya que por cada hijo que creo lo voy a esperar hasta que termine.
             #No aprovecha el multiprocesing.
             #Por lo que lo que estaria bien, pero no del todo. Lo que habria que hacer es hacer un for i in range afuera
             #del for este para que haga un wait por cada uno de los procesos. Los crea todos de una y despues los
             #mata tambien.
+            
             # MAL
          ## os.wait()
             # MAL
@@ -75,6 +72,9 @@ def operation(args):
     print("PID: ", os.getpid(), "-", "PPID: ", os.getppid(), ":", suma)
 
 
+#No duplicar el codigo en dos funciones sino hacer un if dentro de la primera funcion para elegir si usar el
+# fork comun o con verbose.
+#Los sleeps tampoco son de mucha utilidad, se podrian sacar.
 def verbose(args):
     STARTING = "Starting process"
     ENDING = "Ending process"
