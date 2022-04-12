@@ -15,10 +15,9 @@ import time
 import constants
 
 
-al = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-a = None
-c = -1
-aprin = []
+al = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -28,16 +27,18 @@ def main():
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-v', action='store_true', help="Activa: Modo Verboso.")
     args = parser.parse_args()
-    # func_exist(args)
-    # fork_fd(args, c, a, aprin)
+    func_exist(args)
+    
 
-    if args.n and args.v:
+    if args.n and args.v and args.f and args.r:
         print("Ejecucion CON Modo Verboso\n")
-        verbose(args, c, a, aprin)
-    elif args.n:
-        fork_fd(args, c, a, aprin)
+        fork_fd(args)
+    elif args.n and args.f and args.r:
+        print("Ejecucion SIN Modo Verboso\n")   
+        fork_fd(args)     
     else:
-        print("Ejecucion SIN Modo Verboso\n")
+        print("Faltan argumentos")
+
 
 def func_exist(args):
     if os.path.exists(args.f):
@@ -45,43 +46,27 @@ def func_exist(args):
         return "Archivo f creado con exito"
 
 
-def fork_fd(args, c, a, aprin):     
-    for i in range(args.n):  
-        c += 1 
-        ret = os.fork()
-        if ret == 0:   
-            for j in range(args.r):
-                alphabet(args, a, c, aprin)
-            print(aprin) 
-            os._exit(0)
+def fork_fd(args):
     for i in range(args.n):
-        os.wait()
-
-
-def alphabet(args, a, c, aprin):
-    a = al[c]
-    with open("{}{}.txt".format(constants.FILE, args.f), "w") as fd:
-        fd.write(str(a))
-        aprin.append(a)
-        fd.flush()
-        time.sleep(1)
-
-
-
-def verbose(args, c, a, aprin):
-    STARTING = "Proceso"
-    DURING = "escribiendo letra"
-    
-    for i in range(args.n):
-        c += 1
         ret = os.fork()
         if ret == 0:       
             for j in range(args.r):  
-                alphabet(args, a, c, aprin)                               
-                print(STARTING, os.getpid(),DURING, al[c])   
+                alphabet(args, i)
+                if args.v == True:                                
+                    print(f"{constants.STARTING}, {os.getpid()},{constants.DURING}, {al[i]}")   
             os._exit(0)        
     for i in range(args.n):
         os.wait()
+    with open("{}{}.txt".format(constants.FILE, args.f), "a") as fd:
+        fd.write('\n') 
+
+
+def alphabet(args, c):
+    a = al[c]
+    with open("{}{}.txt".format(constants.FILE, args.f), "a") as fd:
+        fd.write(str(a))
+        fd.flush()
+    time.sleep(1)
 
 
 if __name__=='__main__':
