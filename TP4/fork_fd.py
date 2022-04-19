@@ -1,6 +1,6 @@
 ## Ejercicio del TP4 - Uso de Fork() - STRING ABECEDARIO
 
-# Fork es un metodo de python que sirve para crear procesos hijos de otros.
+# "Fork" es un metodo de python que sirve para crear procesos hijos de otros.
 
 #----------------------------------#
 
@@ -47,6 +47,8 @@ def func_exist(args):
 
 
 def fork_fd(args):
+    #Tendriamos que poner que el padre habra el archivo antes y que le pase un valo de offset a los hijos.
+    #Antes de hacer el write podiramos hacer un sigend.
     for i in range(args.n):
         ret = os.fork()
         if ret == 0:       
