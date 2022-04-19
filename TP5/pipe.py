@@ -63,3 +63,6 @@ def invest(args):
 
 if __name__=='__main__':
     main()
+    
+
+#Bibliografica de ayuda: https://www.tutorialspoint.com/python/os_pipe.htm
