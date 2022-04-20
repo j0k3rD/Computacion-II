@@ -15,3 +15,6 @@ Prof. Diego Córdoba - @d1cor
 
 ## TP4
   - Fork() con repeticiones
+
+## TP5
+  - os.Pipe

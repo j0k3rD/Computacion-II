@@ -6,7 +6,7 @@ import argparse
 import constants_pipe
 import os
 import sys
-
+import time
 
 def main():
     parser = argparse.ArgumentParser()
@@ -47,7 +47,9 @@ def invest(args):
         # una sola funcion por lo que lo hacemos con la "f" al principio en vez de format.
             print(f"{line[::-1].strip()}")
             r.close()
+            time.sleep(1)
             # print("Child closing")
+            # sys.exit(0)
 
         else:
             #Proceso que realiza el Padre
@@ -56,10 +58,15 @@ def invest(args):
             # print("Father writting")
             w.write(lines[i])
             w.close()
-            # print("Father closing")
             os.wait()
+            # print("Father closing")
             sys.exit(0)
 
 
 if __name__=='__main__':
     main()
+    
+
+#Bibliografica de ayuda: https://www.tutorialspoint.com/python/os_pipe.htm
+#      readline()        https://stackoverflow.com/questions/6193779/python-readline-from-pipe-on-linux
+
