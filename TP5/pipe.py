@@ -69,4 +69,4 @@ if __name__=='__main__':
 
 #Bibliografica de ayuda: https://www.tutorialspoint.com/python/os_pipe.htm
 #      readline()        https://stackoverflow.com/questions/6193779/python-readline-from-pipe-on-linux
-
+#
