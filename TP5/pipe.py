@@ -26,9 +26,9 @@ def main():
 def invest(args):
     with open(args.f, 'w') as fd:
         fd.write(constants_pipe.TEXT)
-    fs = open(args.f,'r')
-    lines = fs.readlines()
-    fs.close()
+    fd = open(args.f,'r')
+    lines = fd.readlines()
+    fd.close()
 
         # lines = sum(1 for line in fd)
         # print(lines)
