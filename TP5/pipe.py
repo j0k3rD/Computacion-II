@@ -35,30 +35,47 @@ def invest(args):
 
     for i in range(len(lines)):
         #Inicio el descriptor r,w
-        r,w = os.pipe()
+        r1,w1 = os.pipe()
+        r2,w2 = os.pipe()
         ret = os.fork()
         if ret == 0:
             #Proceso que hacen los hijos
-            os.close(w)
-            r = os.fdopen(r,'r')
+            ##Primera Parte recibir la linea e invertirla.
+            os.close(w1)
+            r1 = os.fdopen(r1,'r')
             # print("Child reading")
-            line = r.readline()
+            line = r1.readline()
         # No puedo poner solo el parametro de lines dentro de las llaves y agregarle lo otro ya que todo hace
         # una sola funcion por lo que lo hacemos con la "f" al principio en vez de format.
-            print(f"{line[::-1].strip()}")
-            r.close()
-            time.sleep(1)
+            inv = (f"{line[::-1].strip()}")
+            r1.close()
+            # time.sleep(1)
+
+            ##Segunda Parte: Enviar la linea invertida.
+            os.close(r2)
+            w2 = os.fdopen(w2, 'w')
+            w2.write(inv)
+            w2.close()
             # print("Child closing")
             # sys.exit(0)
 
         else:
             #Proceso que realiza el Padre
-            os.close(r)
-            w = os.fdopen(w,'w')
+            ##Primera Parte: enviar la linea al hijo.
+            os.close(r1)
+            w1 = os.fdopen(w1,'w')
             # print("Father writting")
-            w.write(lines[i])
-            w.close()
+            w1.write(lines[i])
+            w1.close()
             os.wait()
+
+            #Segunda Parte: Leer la linea invertida que le paso el hijo.
+            os.close(w2)
+            r2 = os.fdopen(r2, 'r')
+            inv = r2.readline()
+            print(inv)
+            r2.close()
+            # time.sleep(1)
             # print("Father closing")
             sys.exit(0)
 
