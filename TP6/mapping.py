@@ -3,107 +3,89 @@
 # 
 
 import argparse
-from cgitb import handler
 import os
 import sys
-import time
 import mmap
 import signal
 
-# def main():
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument('-f',type=str,help="Ruta donde se ejecutara el archivo")
-#     args = parser.parse_args()
-#     mmap_sig(args)
-
-# def mmap_sig(args):
-
-# fd = open("{}test.txt".format(args.f),"w+")
-memory = mmap.mmap(-1,20)
-
-# os.ftruncate(fd.fileno(), 10)
-
-# memory = mmap.mmap(fd.fileno(),0, access=mmap.ACCESS_WRITE)
-
-    # memory = mmap.mmap(fd,10)
+pid_H1 = None
+pid_H2 = None
 
 def handler_father(s,f):
-    while(True):
-        lines = memory.readline()
-        print("Padre Leyendo: ",lines.decode())
-        if not lines:
-            break
+    #Señales para matar a los hijos
+    if s == signal.SIGUSR1:
+        os.kill(pid_H2, signal.SIGUSR1)
+    elif s == signal.SIGUSR2:
+        os.kill(pid_H2, signal.SIGUSR2)
+        print("Father exiting..")
+        for i in range(2):
+            os.wait()
+        sys.exit(0)
 
-def handler_H1(s,f):
-    signal.signal(signal.SIGINT, handler_H1)###
-    memory.write(sys.stdin.read().encode())
-    # os.setsid()
-    # os.chdir('/')
 
 def handler_H2(s,f):
-    signal.signal(signal.SIG_DFL, signal.SIGUSR1)
-    read_l = memory.readline().decode()
-    memory.write(read_l.decode().upper().encode())
+    print("H2 Notified")
+    if s == signal.SIGUSR1:
+        line = memory.readline().decode().upper()
+        os.write(fd, line.encode())
+    elif s == signal.SIGUSR2:
+        print("H2 Exiting")
+        sys.exit(0)
 
-def main():
-    # read_l = memory.readline().decode()
-    # memory.write(read_l.decode().upper().encode())
 
-    print("Iniciando..")
+# def main(self):
+parser = argparse.ArgumentParser()
+parser.add_argument('-f',type=str,help="Ruta donde se ejecutara el archivo")
+args = parser.parse_args()
 
-    ff_pid = os.fork()
-    if ff_pid == 0:
-        #Procesos que realiza el HIJO 1
-        signal.signal(signal.SIGUSR2, handler_H1)
-        os.kill(ff_pid,signal.SIGUSR1)
-        signal.pause()
+memory = mmap.mmap(-1,100)
+'''
+os.O_WRONLY = abrir solo como escritura
+os.O_CREAT = crea un archivo si no existe
+os.O_TRUNC = tamaño truncado a 0
+'''
+fd = os.open("{}test.txt".format(args.f), os.O_WRONLY | os.O_CREAT | os.O_TRUNC)
 
-        sf_pid = os.fork()
-        if sf_pid == 0:
-        #Procesos que realiza el HIJO 2
-            while True:
-                time.sleep(1)
+print("Starting..")
+
+for i in range(2):
+    pid = os.fork()
+    if pid == 0:
+        if i == 0:
+            #Procesos que realiza el HIJO 1
+            pid_H1 = os.getpid()
+            for line in sys.stdin:
+                if line == "bye":
+                    os.kill(pid_H1, signal.SIGUSR2)
+                    print("H1 Exiting")
+                    sys.exit(0)
+            memory.write(line.encode())
+            os.kill(pid_H1,signal.SIGUSR1)
+
         else:
-            #Procesos que realiza el PADRE 1
-            print("Second FORK")
-            print("Child PID: %d" % sf_pid)
-            os._exit(os.EX_OK)
+            #Proceso que realiza el HIJO 2
+            pid_H2 = os.getpid()
+            signal.signal(signal.SIGUSR1, handler_H2)
+            signal.signal(signal.SIGUSR2, handler_H2)
+            while True:
+                signal.pause()
 
     else:
         #Procesos que realiza el PADRE
-        signal.signal(signal.SIGUSR1, handler_H1)
-        signal.pause()
-        print("First FORK")
-        print("Child PID: %d" % ff_pid)
+        print("Father Waiting...")
         signal.signal(signal.SIGUSR1, handler_father)
-        signal.signal(signal.SIGUSR1, handler_H2)
-        # signal.pause()        
-        os.kill(ff_pid, signal.SIGUSR1)
-        os.wait()
+        signal.signal(signal.SIGUSR2, handler_father)
 
+        while True:
+            signal.pause()
+            print("Father Reading: ", memory.readline().decode())
+            print("Father Notifying..")
 
-if __name__== "__main__":
-    main()
-
-        # signal.signal(signal.SIGUSR1, handler_H1)
-        # signal.signal(signal.SIGINT, signal.SIG_DFL)
-        # memory.write(sys.stdin.read().encode())
-        # exit(0)
-                # os.kill(h1, signal.SIGUSR1)
-            # elif i == 2:
-            #     #Procesos que realiza el HIJO 2
-            #     read_l = memory.readline().decode()
-            #     memory.write(read_l.decode().upper().encode())
-    
-
-# signal.signal(signal.SIGUSR1, handler_H1) 
-# time.sleep(5)
-# # memory.seek(0)
-
-    # signal.signal(signal.SIGUSR1, handler_H2)
-# for i in range(1):
+# for i in range(2):
 #     os.wait()
 
-
-# if __name__=='__main__':
+# if __name__== "__main__":
 #     main()
+
+
+#/home/aaron/Documents/Facultad/Tercer_Año/Computacion-II/TP6/
