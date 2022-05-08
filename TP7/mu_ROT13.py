@@ -15,27 +15,30 @@ El primer hijo deberá leer desde dicha cola de mensajes y mostrar el contenido 
 
 import sys
 import os
-import re
 from multiprocessing import Process, Pipe, Queue
 import codecs
+import time
 
 
 def f(r,w,q,nproc):
     if(nproc == 2):
         #Proceso del H2, 
-        encrypt = codecs.encode(r.recv(), 'rot13')
-        q.put(encrypt)
+        while True:
+            encrypt = codecs.encode(r.recv(), 'rot13')
+            q.put(encrypt)
 
     if(nproc == 1):
         #Proceso del H1, LEE DESDE STDIN
         sys.stdin = open(0)
-        print("Ingrese una linea: ")
-        c = sys.stdin.readline()
-        w.send(c)
-        w.close()
-        #H1 LEE lo que le envio encriptado el H2
-        print(q.get())
+        while True:
+            print("Ingrese una linea: ")
+            c = sys.stdin.readline()
+            w.send(c)
+            #H1 LEE lo que le envio encriptado el H2
+            time.sleep(1)
+            print("El Proceso H1 lee: ",q.get())
 
+        
     print("Proceso PID %d (%d) terminando..." % (os.getpid(), nproc))
 
 
@@ -51,4 +54,4 @@ if __name__ == '__main__':
     p2.start()
     # p1.join()
     # p2.join()
-    print("Bye...")
+    # print("Bye...")
