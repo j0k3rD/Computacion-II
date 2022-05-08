@@ -15,48 +15,40 @@ El primer hijo deberá leer desde dicha cola de mensajes y mostrar el contenido 
 
 import sys
 import os
-from multiprocessing import Process, Pipe
-
-# ##PARA INGRESAR POR STDIN
-# def func():
-#     sys.stdin = open(0)
-#     print(sys.stdin)
-#     print("Ingrese una linea: ")
-#     c = sys.stdin.readline()
-#     print('Got', c)
+import re
+from multiprocessing import Process, Pipe, Queue
+import codecs
 
 
-# multiprocessing.Process(target=func).start()
-
-def f(r,w,nproc):
-    # print("nproc vale: %d" % nproc)
+def f(r,w,q,nproc):
     if(nproc == 2):
         #Proceso del H2, 
-        # print("receptor")
-        print("%d: proc %d recibiendo: %s" % (nproc, os.getpid(),r.recv()))
-        r.send("_hello world")
+        encrypt = codecs.encode(r.recv(), 'rot13')
+        q.put(encrypt)
+
     if(nproc == 1):
         #Proceso del H1, LEE DESDE STDIN
         sys.stdin = open(0)
-        print(sys.stdin)
         print("Ingrese una linea: ")
         c = sys.stdin.readline()
-        # print('Got', c)
-        # print("emisor")
         w.send(c)
-        print(str(nproc) + w.recv())
-    r.close()
-    w.close()
+        w.close()
+        #H1 LEE lo que le envio encriptado el H2
+        print(q.get())
+
     print("Proceso PID %d (%d) terminando..." % (os.getpid(), nproc))
+
 
 if __name__ == '__main__':
     #Crea el Pipe
     r, w = Pipe()
-    # print("padre: %d" %os.getpid())
-    p1 = Process(target=f, args=(r,w,1))
-    p2 = Process(target=f, args=(r,w,2))
+    #Crea la Cola
+    q = Queue()
+    #Creacion de los Procesos H1 y H2
+    p1 = Process(target=f, args=(r,w,q,1))
+    p2 = Process(target=f, args=(r,w,q,2))
     p1.start()
     p2.start()
-    p1.join()
-    p2.join()
+    # p1.join()
+    # p2.join()
     print("Bye...")
