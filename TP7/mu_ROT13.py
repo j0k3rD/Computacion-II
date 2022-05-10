@@ -24,7 +24,7 @@ def f(r,w,q,nproc):
     if(nproc == 1):
         #Proceso del H1, LEE DESDE STDIN
         sys.stdin = open(0)
-        print("Hello Sr! Remember 'sudo bye' to close.")
+        print("Hello Sr! Remember 'sudo bye' to close.\n")
         print("Enter the string: ")
         while True:
             for line in sys.stdin:
@@ -49,13 +49,9 @@ def f(r,w,q,nproc):
             else:
                 print("\nH2 encrypting..")
                 q.put(codecs.encode(msg, 'rot13'))
-        r.close()
-    print("\nProcess PID %d (%d) ending..." % (os.getpid(), nproc))
 
 
 if __name__ == '__main__':
-    #Crea el file descriptor
-    # fd = sys.stdin.fileno()
     #Crea el Pipe
     r, w = Pipe()
     #Crea la Cola
@@ -68,4 +64,4 @@ if __name__ == '__main__':
     p1.join()
     p2.join()
     time.sleep(1)
-    print("\nGoodbye MrRobot")
+    print("\nGoodbye Mr.Robot")
