@@ -18,32 +18,44 @@ import os
 from multiprocessing import Process, Pipe, Queue
 import codecs
 import time
-import signal
-
 
 def f(r,w,q,nproc):
 
     if(nproc == 1):
         #Proceso del H1, LEE DESDE STDIN
         sys.stdin = open(0)
+        print("Hello Sr! Remember 'sudo bye' to close.")
+        print("Enter the string: ")
         while True:
-            print("Ingrese una linea: ")
-            c = sys.stdin.readline()
-            w.send(c)
-            #H1 LEE lo que le envio encriptado el H2
-            time.sleep(1)
-            print("El Proceso H1 lee: ",q.get())
+            for line in sys.stdin:
+                if line[:8] == "sudo bye":
+                    w.send("sudo bye")
+                    w.close()
+                    return
+                else:
+                    w.send(line)
+                    #H1 LEE lo que le envio encriptado el H2
+                    time.sleep(1)
+                    print("\nH1 reading encrypted line: ",q.get())
+                    r.close()
     
     if(nproc == 2):
-    #Proceso del H2, 
+    #Proceso del H2
         while True:
-            encrypt = codecs.encode(r.recv(), 'rot13')
-            q.put(encrypt)
-        
-    print("Proceso PID %d (%d) terminando..." % (os.getpid(), nproc))
+            msg = str(r.recv())
+            if msg == "sudo bye":
+                print("\nChilds ending...")
+                return
+            else:
+                print("\nH2 encrypting..")
+                q.put(codecs.encode(msg, 'rot13'))
+        r.close()
+    print("\nProcess PID %d (%d) ending..." % (os.getpid(), nproc))
 
 
 if __name__ == '__main__':
+    #Crea el file descriptor
+    # fd = sys.stdin.fileno()
     #Crea el Pipe
     r, w = Pipe()
     #Crea la Cola
@@ -55,4 +67,5 @@ if __name__ == '__main__':
     p2.start()
     p1.join()
     p2.join()
-    print("Bye...")
+    time.sleep(1)
+    print("\nGoodbye MrRobot")
