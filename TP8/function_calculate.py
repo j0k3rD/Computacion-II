@@ -40,17 +40,17 @@ class Main:
 
 
         #Metodo que me muestra en que elemento estoy realizando el cálculo.
-        def sumador(self,x):
+        def sumador(x):
             x = x+1
 
         #Metodo que me trae cada una de las lineas del archivo
-        def fd_lines(self,args):
+        def fd_lines(args):
             with open(args.l, "r") as fd:
                 line = fd.readline()
                 return line
 
         #Metodo que calcula la raiz de c/u de los elementos del file
-        def root(self,x):
+        def root(x):
             line = fd_lines()
             print("Process %d calculing root of %d" %(os.getpid(), x))
             res = math.sqrt(line)
@@ -58,7 +58,7 @@ class Main:
 
 
         #Metodo que calcula la potencia de c/u los elementos del file
-        def pot(args,x):
+        def pot(x):
             line = fd_lines()
             print("Proceso %d calculando cubo de %d" %(os.getpid(), x))
             res = math.pow(line)
@@ -66,7 +66,7 @@ class Main:
 
 
         #Metodo que calcula el logaritmo de c/u de los elementos del file 
-        def log(args,x):
+        def log(x):
             line = fd_lines()
             print("Proceso %d calculando cubo de %d" %(os.getpid(), x))
             res = math.log(line)
