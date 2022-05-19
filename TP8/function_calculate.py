@@ -85,13 +85,14 @@ class Main:
 
         elif args.c == "pot":
             #Ejecuta la funcion pot() con cada elemento de la lista
-            results = pool.map(pot, )
+            results = pool.map(pot, range(12))
             print(results)
 
         elif args.c == "log":
             #Ejecuta la funcion log() con cada elemento de la lista
             results = pool.map(log, range(12))
             print(results)
+
 
 if __name__=='__main__':
     Main.main()
