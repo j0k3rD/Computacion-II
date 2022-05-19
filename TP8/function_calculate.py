@@ -5,9 +5,11 @@ Realizar un programa en python que reciba por argumentos:
     -f /ruta/al/archivo_matriz.txt
     -c funcion_calculo
 
-El programa deberá leer una matriz almacenada en el archivo de texto pasado por argumento -f, y deberá calcular la funcion_calculo para cada uno de sus elementos.
+El programa deberá leer una matriz almacenada en el archivo de texto pasado por argumento -f, 
+y deberá calcular la funcion_calculo para cada uno de sus elementos.
 
-Para aumentar la performance, el programa utilizará un Pool de procesos, y cada proceso del pool realizará los cálculos sobre una de las filas de la matriz.
+Para aumentar la performance, el programa utilizará un Pool de procesos, y cada proceso del pool 
+realizará los cálculos sobre una de las filas de la matriz.
 
 La funcion_calculo podrá ser una de las siguientes:
 
@@ -15,6 +17,8 @@ La funcion_calculo podrá ser una de las siguientes:
     pot: calcula la potencia del elemento elevado a si mismo.
     log: calcula el logaritmo decimal de cada elemento.
 '''
+
+
 #Importando librerias necesarias.
 from multiprocessing import Pool
 import os
@@ -30,6 +34,22 @@ def main():
     parser.add_argument('-c',type=str,help="Select the function to calculate:   .root  .pot  .log")
     args = parser.parse_args()
     
+    if args.c == "root":
+        #Ejecuta la funcion root() con cada elemento de la lista
+        results = pool.map(root, range(len(args.f)))
+        print(results)
+
+    elif args.c == "pot":
+        #Ejecuta la funcion pot() con cada elemento de la lista
+        results = pool.map(pot, range(len(args.f)))
+        print(results)
+
+    elif args.c == "log":
+        #Ejecuta la funcion log() con cada elemento de la lista
+        results = pool.map(log, range(len(args.f)))
+        print(results)
+
+
     #Metodo que calcula la raiz de c/u de los elementos del file
     def root(args):
         for i in range(len(args.f)):
@@ -50,7 +70,3 @@ def main():
 
     #Creo mi pool con n procesos
     pool = Pool(processes=(args.p))
-
-    
-
-
