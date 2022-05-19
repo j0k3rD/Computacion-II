@@ -79,17 +79,17 @@ class Main:
 
         #Con unos if decido que metodo aplicar para cada parametro en -c que se ingrese
         if args.c == "root":
-            #Ejecuta la funcion root() con cada elemento de la lista
+            #Ejecuta la funcion root() con cada linea de la lista
             results = pool.map(root, range(12))
             print(results)
 
         elif args.c == "pot":
-            #Ejecuta la funcion pot() con cada elemento de la lista
+            #Ejecuta la funcion pot() con cada linea de la lista
             results = pool.map(pot, range(12))
             print(results)
 
         elif args.c == "log":
-            #Ejecuta la funcion log() con cada elemento de la lista
+            #Ejecuta la funcion log() con cada linea de la lista
             results = pool.map(log, range(12))
             print(results)
 
