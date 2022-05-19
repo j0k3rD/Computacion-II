@@ -70,3 +70,6 @@ def main():
 
     #Creo mi pool con n procesos
     pool = Pool(processes=(args.p))
+
+if __name__=='__main__':
+    main()
