@@ -28,7 +28,7 @@ import math
 
 
 results = []
-si = [['1','2','3'],[4,5,6]]
+si = [[1,2,3],[4,5,6]]
     
 #Creacion de la funcion Main, donde se ejecutaran todos lo metodos del programa.
 # def main():
@@ -57,18 +57,21 @@ def fd_lines(args):
 
 #Metodo que calcula la raiz de c/u de los elementos de los elementos de la linea de file
 def root(num):
+    time.sleep(1)    
     print("Process %d calculing root of %d" %(os.getpid(), num))
     return math.sqrt(num)
 
 
 #Metodo que calcula la potencia de c/u de los elementos de los elementos de la linea de file
 def pot(num):
+    time.sleep(1)
     print("Process %d calculing root of %d" %(os.getpid(), num))
     return math.pow(num,num)
 
 
 #Metodo que calcula el logaritmo de c/u de los elementos de los elementos de la linea de file
 def log(num):
+    time.sleep(1)
     print("Process %d calculing root of %d" %(os.getpid(), num))
     return math.log10(num)
 
@@ -80,32 +83,36 @@ pool = Pool(processes= int(args.p))
 #Con unos if decido que metodo aplicar para cada parametro en -c que se ingrese
 if args.c == "root":
     #Ejecuta la funcion root() con cada linea de la lista
-    print("-------------------------------")
-    print("CALCULATE ROOT\n")
-    fd_lines(args)
-    result = pool.map(root,results)
+    for i in range(len(si)):
+        print("-------------------------------")
+        print("CALCULATE ROOT\n")
+        # fd_lines(args)
+        result = pool.map(root,si[i])
+        print("\nLIST RESULT: ", result)
+        print("-------------------------------\n")
     pool.close()
-    print("\nLIST RESULT: ", result)
-    print("-------------------------------")
+
 
 elif args.c == "pot":
     #Ejecuta la funcion pot() con cada linea de la lista
-    print("-------------------------------")
-    print("CALCULATE POWER\n")
-    fd_lines(args)
-    result = pool.map(pot,results[0])
+    for i in range(len(si)):
+        print("-------------------------------")
+        print("CALCULATE POWER\n")
+        result = pool.map(pot,si[i])
+        print("\nLIST RESULT: ", result)
+        print("-------------------------------\n")
     pool.close()
-    print("\nLIST RESULT: ", result)
-    print("-------------------------------")
+
 
 elif args.c == "log":
     #Ejecuta la funcion log() con cada linea de la lista
-    print("-------------------------------")
-    print("CALCULATE LOGARITHM\n")
-    result = pool.map(log,si)
+    for i in range(len(si)):
+        print("-------------------------------")
+        print("CALCULATE LOGARITHM\n")
+        result = pool.map(log,si[i])
+        print("\nLIST RESULT: ", result)
+        print("-------------------------------\n")
     pool.close()
-    print("\nLIST RESULT: ", result)
-    print("-------------------------------")
     
     
 # if __name__=='__main__':
