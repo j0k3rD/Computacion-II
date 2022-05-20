@@ -28,7 +28,7 @@ import math
 
 
 results = []
-si = [1,2,3]
+si = [['1','2','3'],[4,5,6]]
     
 #Creacion de la funcion Main, donde se ejecutaran todos lo metodos del programa.
 # def main():
@@ -49,9 +49,11 @@ def pid(num):
 #Metodo que me trae cada una de las lineas del archivo
 def fd_lines(args):
     with open(args.f) as fd:
-        for lineas in fd:
-            results.extend(lineas.split())
-        print(results)
+        for line in fd:
+            strip_lines = line.strip('"')
+            listli = strip_lines.split()
+            print(listli)
+            m=results.append(listli)
 
 #Metodo que calcula la raiz de c/u de los elementos de los elementos de la linea de file
 def root(num):
@@ -70,6 +72,7 @@ def log(num):
     print("Process %d calculing root of %d" %(os.getpid(), num))
     return math.log10(num)
 
+
 #Creo mi pool con n procesos
 pool = Pool(processes= int(args.p))
 
@@ -79,7 +82,8 @@ if args.c == "root":
     #Ejecuta la funcion root() con cada linea de la lista
     print("-------------------------------")
     print("CALCULATE ROOT\n")
-    result = pool.map(root,si)
+    fd_lines(args)
+    result = pool.map(root,results)
     pool.close()
     print("\nLIST RESULT: ", result)
     print("-------------------------------")
@@ -88,7 +92,8 @@ elif args.c == "pot":
     #Ejecuta la funcion pot() con cada linea de la lista
     print("-------------------------------")
     print("CALCULATE POWER\n")
-    result = pool.map(pot,si)
+    fd_lines(args)
+    result = pool.map(pot,results[0])
     pool.close()
     print("\nLIST RESULT: ", result)
     print("-------------------------------")
@@ -101,5 +106,7 @@ elif args.c == "log":
     pool.close()
     print("\nLIST RESULT: ", result)
     print("-------------------------------")
+    
+    
 # if __name__=='__main__':
 #     main()
