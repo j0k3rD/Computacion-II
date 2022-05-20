@@ -68,7 +68,7 @@ def pot(num):
 #Metodo que calcula el logaritmo de c/u de los elementos de los elementos de la linea de file
 def log(num):
     print("Process %d calculing root of %d" %(os.getpid(), num))
-    return math.log(num)
+    return math.log10(num)
 
 #Creo mi pool con n procesos
 pool = Pool(processes= int(args.p))
@@ -77,27 +77,29 @@ pool = Pool(processes= int(args.p))
 #Con unos if decido que metodo aplicar para cada parametro en -c que se ingrese
 if args.c == "root":
     #Ejecuta la funcion root() con cada linea de la lista
-    fd_lines(args)
-    print(si)
+    print("-------------------------------")
+    print("CALCULATE ROOT\n")
     result = pool.map(root,si)
     pool.close()
-    print(result)
+    print("\nLIST RESULT: ", result)
+    print("-------------------------------")
 
 elif args.c == "pot":
     #Ejecuta la funcion pot() con cada linea de la lista
-    fd_lines(args)
-    print(si)
+    print("-------------------------------")
+    print("CALCULATE POWER\n")
     result = pool.map(pot,si)
     pool.close()
-    print(result)
+    print("\nLIST RESULT: ", result)
+    print("-------------------------------")
 
 elif args.c == "log":
     #Ejecuta la funcion log() con cada linea de la lista
-    fd_lines(args)
-    print(si)
+    print("-------------------------------")
+    print("CALCULATE LOGARITHM\n")
     result = pool.map(log,si)
     pool.close()
-    print(result)
-
+    print("\nLIST RESULT: ", result)
+    print("-------------------------------")
 # if __name__=='__main__':
 #     main()
