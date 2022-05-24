@@ -52,8 +52,12 @@ def fd_lines(args):
         for line in fd:
             strip_lines = line.strip('"')
             listli = strip_lines.split()
-            print(listli)
+            # print(listli)
             m=results.append(listli)
+            for i in range(len(results)):
+                for j in range(len(results[i])):
+                    results[i][j] = int(results[i][j])
+
 
 #Metodo que calcula la raiz de c/u de los elementos de los elementos de la linea de file
 def root(num):
@@ -80,14 +84,16 @@ def log(num):
 pool = Pool(processes= int(args.p))
 
 
-#Con unos if decido que metodo aplicar para cada parametro en -c que se ingrese
+#Con unos if decido que metodo aplicar para cada parametro en -c que se ingrese.
 if args.c == "root":
+    #Primero tengo que generar las listas (lines) de numeros que se le ingresaran a la operacion.
+    fd_lines(args)
     #Ejecuta la funcion root() con cada linea de la lista
-    for i in range(len(si)):
+    for i in range(len(results)):
         print("-------------------------------")
         print("CALCULATE ROOT\n")
-        # fd_lines(args)
-        result = pool.map(root,si[i])
+        # result = pool.starmap(root,results[i])
+        result = pool.map_async(root,range(len(results))).get()
         print("\nLIST RESULT: ", result)
         print("-------------------------------\n")
     pool.close()
@@ -98,7 +104,7 @@ elif args.c == "pot":
     for i in range(len(si)):
         print("-------------------------------")
         print("CALCULATE POWER\n")
-        result = pool.map(pot,si[i])
+        result = pool.map(pot,si[i])   
         print("\nLIST RESULT: ", result)
         print("-------------------------------\n")
     pool.close()
