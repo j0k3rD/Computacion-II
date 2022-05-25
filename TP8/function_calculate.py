@@ -47,6 +47,7 @@ args = parser.parse_args()
 def sumador(num):
     num = num+1
 
+#Metodo que me muestra el proceso con el cual estoy realizando el cálculo.
 def pid(num):
     return ("pid: %d - x=%d" % (os.getpid(), num))
 
@@ -122,5 +123,6 @@ def calculate(args):
     matriz = np.array(results)
     print(matriz)
     print("\n")
+
 #Llamo al metodo para iniciar el script
 calculate(args)
