@@ -25,13 +25,13 @@ import os
 import time
 import argparse
 import math
+import numpy as np
 
 
+lines = []
 results = []
-si = [[1,2,3],[4,5,6]]
     
-#Creacion de la funcion Main, donde se ejecutaran todos lo metodos del programa.
-# def main():
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-p',type=str,help="Enter the number of processes to create. EJ: '2', '5'")
 parser.add_argument('-f',type=str,help="Enter the file path. EJ: '/home/user/Documents/test.txt.'")
@@ -52,11 +52,14 @@ def fd_lines(args):
         for line in fd:
             strip_lines = line.strip('"')
             listli = strip_lines.split()
-            # print(listli)
-            m=results.append(listli)
-            for i in range(len(results)):
-                for j in range(len(results[i])):
-                    results[i][j] = int(results[i][j])
+            m=lines.append(listli)
+            '''
+            Ocurria un error, los elementos se guardaban como 'str', por lo que ahora los convierto cada uno
+            de ellos a 'int'.
+            '''
+            for i in range(len(lines)):
+                for j in range(len(lines[i])):
+                    lines[i][j] = int(lines[i][j])
 
 
 #Metodo que calcula la raiz de c/u de los elementos de los elementos de la linea de file
@@ -84,42 +87,36 @@ def log(num):
 pool = Pool(processes= int(args.p))
 
 
-#Con unos if decido que metodo aplicar para cada parametro en -c que se ingrese.
-if args.c == "root":
-    #Primero tengo que generar las listas (lines) de numeros que se le ingresaran a la operacion.
-    fd_lines(args)
-    #Ejecuta la funcion root() con cada linea de la lista
-    for i in range(len(results)):
+#Primero tengo que generar las listas (lines) de numeros que se le ingresaran a la operacion.
+fd_lines(args)
+
+
+#Metodo que inicia el calculo
+def calculate(args):
+    #Ejecuta la funcion que elija con cada linea de la lista
+    for i in range(len(lines)):
         print("-------------------------------")
-        print("CALCULATE ROOT\n")
-        # result = pool.starmap(root,results[i])
-        result = pool.map_async(root,range(len(results))).get()
+        #Con unos if decido que metodo aplicar para cada parametro en -c que se ingrese.
+        if args.c == "root":
+            print("CALCULATE ROOT\n")
+        elif args.c == "pot":
+            print("CALCULATE POWER\n")
+        elif args.c == "log":
+            print("CALCULATE LOGARITHM\n")
+        
+        #! NO PUEDO HACER QUE UN PROCESO HAGA TODA UNA LINEA DE LA MATRIZ
+        result = pool.map(root,lines[i])
+        #Guardo el elemento dentro de mi lista de resultados
+        results.append(result)
+
         print("\nLIST RESULT: ", result)
         print("-------------------------------\n")
     pool.close()
 
+    #Genero mi matriz resultante con los elementos de mi lista 'results' y la muestro por pantalla
+    print("\nRESULTING MATRIX:\n")
+    matriz = np.array(results)
+    print(matriz)
 
-elif args.c == "pot":
-    #Ejecuta la funcion pot() con cada linea de la lista
-    for i in range(len(si)):
-        print("-------------------------------")
-        print("CALCULATE POWER\n")
-        result = pool.map(pot,si[i])   
-        print("\nLIST RESULT: ", result)
-        print("-------------------------------\n")
-    pool.close()
-
-
-elif args.c == "log":
-    #Ejecuta la funcion log() con cada linea de la lista
-    for i in range(len(si)):
-        print("-------------------------------")
-        print("CALCULATE LOGARITHM\n")
-        result = pool.map(log,si[i])
-        print("\nLIST RESULT: ", result)
-        print("-------------------------------\n")
-    pool.close()
-    
-    
-# if __name__=='__main__':
-#     main()
+#Llamo al metodo para iniciar el script
+calculate(args)
