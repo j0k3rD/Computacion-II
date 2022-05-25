@@ -1,3 +1,7 @@
+## Ejercicio del TP8 - Uso de Pool() - OPERACIONES CON MATRICES
+
+#Pool: En este caso vamos a llamar a un grupo de procesos. Puedo crear procesos idle y le damos tareas.
+
 '''
 Realizar un programa en python que reciba por argumentos:
 
@@ -117,6 +121,6 @@ def calculate(args):
     print("\nRESULTING MATRIX:\n")
     matriz = np.array(results)
     print(matriz)
-
+    print("\n")
 #Llamo al metodo para iniciar el script
 calculate(args)
