@@ -104,16 +104,26 @@ def calculate(args):
         #Con unos if decido que metodo aplicar para cada parametro en -c que se ingrese.
         if args.c == "root":
             print("CALCULATE ROOT\n")
+            #! NO PUEDO HACER QUE UN PROCESO HAGA TODA UNA LINEA DE LA MATRIZ
+            result = pool.map(root,lines[i])
+            #Guardo el elemento dentro de mi lista de resultados
+            results.append(result)
+            continue
         elif args.c == "pot":
             print("CALCULATE POWER\n")
+            #! NO PUEDO HACER QUE UN PROCESO HAGA TODA UNA LINEA DE LA MATRIZ
+            result = pool.map(pot,lines[i])
+            #Guardo el elemento dentro de mi lista de resultados
+            results.append(result)        
+            continue
         elif args.c == "log":
             print("CALCULATE LOGARITHM\n")
+            #! NO PUEDO HACER QUE UN PROCESO HAGA TODA UNA LINEA DE LA MATRIZ
+            result = pool.map(log,lines[i])
+            #Guardo el elemento dentro de mi lista de resultados
+            results.append(result)
+            continue
         
-        #! NO PUEDO HACER QUE UN PROCESO HAGA TODA UNA LINEA DE LA MATRIZ
-        result = pool.map(root,lines[i])
-        #Guardo el elemento dentro de mi lista de resultados
-        results.append(result)
-
         print("\nLIST RESULT: ", result)
         print("-------------------------------\n")
     pool.close()
