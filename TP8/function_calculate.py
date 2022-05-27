@@ -108,13 +108,17 @@ def calculate(args):
             result = pool.map(root,lines[i])
             #Guardo el elemento dentro de mi lista de resultados
             results.append(result)
+            print("\nLIST RESULT: ", result)
+            print("-------------------------------\n")
             continue
         elif args.c == "pot":
             print("CALCULATE POWER\n")
             #! NO PUEDO HACER QUE UN PROCESO HAGA TODA UNA LINEA DE LA MATRIZ
             result = pool.map(pot,lines[i])
             #Guardo el elemento dentro de mi lista de resultados
-            results.append(result)        
+            results.append(result)       
+            print("\nLIST RESULT: ", result)
+            print("-------------------------------\n") 
             continue
         elif args.c == "log":
             print("CALCULATE LOGARITHM\n")
@@ -122,10 +126,9 @@ def calculate(args):
             result = pool.map(log,lines[i])
             #Guardo el elemento dentro de mi lista de resultados
             results.append(result)
+            print("\nLIST RESULT: ", result)
+            print("-------------------------------\n")
             continue
-        
-        print("\nLIST RESULT: ", result)
-        print("-------------------------------\n")
     pool.close()
 
     #Genero mi matriz resultante con los elementos de mi lista 'results' y la muestro por pantalla
