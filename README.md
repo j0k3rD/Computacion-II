@@ -26,4 +26,7 @@ Prof. Diego Córdoba - @d1cor
   - Multiprocessing y Queue
 
 ## TP8
-  - PoolofWorkers
+  - PoolOfWorkers
+
+## TP9
+  - Threads
