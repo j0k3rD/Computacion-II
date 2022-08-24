@@ -8,9 +8,9 @@ class MyServer(socketserver.BaseRequestHandler):
             command = Popen({data}, stdout=PIPE, stderr=PIPE,shell=True)
             out, err = command.communicate()
             if out.decode() == "":
-                return self.request.send(b"ERROR\n"+err)
+                self.request.send(b"ERROR\n"+err)
             elif err.decode() == "":
-                return self.request.send(b"OK\n"+out)
+                self.request.send(b"OK\n"+out)
 
 class ThrHandle(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
@@ -31,10 +31,7 @@ if __name__=="__main__":
     if args.c == "t":
         server = ThrHandle((HOST,PORT), MyServer)
         server.serve_forever()
-        # try:
-        #     signal.pause()
-        # except:
-        #     server.shutdown()      
+     
     if  args.c == "p":
         server = ProcHandle((HOST, PORT), MyServer)
         server.serve_forever()
