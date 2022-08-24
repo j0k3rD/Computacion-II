@@ -16,11 +16,8 @@ port = args.p
 
 s.connect((host, port))
 
-while True:
+while (1):
     msg = input('> ')
-
     s.send(bytes(msg, "utf-8"))
-
     recv = str(s.recv(1024), "utf-8")
-
-    print('Server reply: {}'.format(recv))
+    print(recv)
