@@ -35,9 +35,6 @@ if __name__=="__main__":
     if  args.c == "p":
         server = ProcHandle((HOST, PORT), MyServer)
         server.serve_forever()
-        # try:
-        #     signal.pause()
-        # except:
-        #     server.shutdown()
+
     else:
-        print("Error! Arguments not valid.")
+        print("[!] Error! Arguments not valid.")
