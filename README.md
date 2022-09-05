@@ -41,3 +41,6 @@ Prof. Diego Córdoba - @d1cor
 
 ## TP9
   - Threads
+  
+## TP10
+  - Sockets
