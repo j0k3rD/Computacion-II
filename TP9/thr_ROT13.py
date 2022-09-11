@@ -30,7 +30,7 @@ import signal
 def exit(signum,frame):
     print("GoodBye Mr.Robot")
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-
+    
 
 def f(q1,q2,nthr):
     if(nthr == 1):

