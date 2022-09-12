@@ -19,7 +19,7 @@ s.connect((host, port))
 while (1):
     msg = input('> ')
     if msg == str("exit"):
-        print("[!] Connection Closed")
+        print("[~] Connection Closed")
         s.send(bytes(msg, "utf-8"))
         break
     elif msg == str(""):
