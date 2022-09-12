@@ -27,5 +27,5 @@ while (1):
         continue
     else:
         s.send(bytes(msg, "utf-8"))
-        recv = str(s.recv(2000000),"utf-8")
+        recv = str(s.recv(1024),"utf-8")
         print(recv)
