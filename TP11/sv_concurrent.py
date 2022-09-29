@@ -5,7 +5,8 @@ from subprocess import Popen, PIPE, STDOUT
 
 def handle(s2, addr):
     while True:
-        data = s2.recv(1024).strip()
+        data = s2.recv(1024)
+        print(data)
         if data == b"exit":
             print("[~] Connection closed.")
             break
