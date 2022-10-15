@@ -49,4 +49,4 @@ Prof. Diego Córdoba - @d1cor
   - Sockets IPv6
 
 ## TP12
-  - Sockets
+  - Sockets IPv6 Concurrent
