@@ -44,3 +44,9 @@ Prof. Diego Córdoba - @d1cor
   
 ## TP10
   - Sockets
+
+## TP11
+  - Sockets IPv6
+
+## TP12
+  - Sockets
