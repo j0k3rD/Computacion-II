@@ -16,7 +16,7 @@ port = args.p
 
 s.connect((host, port))
 
-while True:
+while (1):
     msg = input('> ')
     if msg == str("exit"):
         print("[~] Connection Closed")

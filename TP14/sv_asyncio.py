@@ -1,9 +1,11 @@
 import asyncio, argparse
 from subprocess import Popen, PIPE
 
-def execution(self):
+#Hay que tener en cuenta que esta funcion necesita tener los parametros r y w para poder funcionar.
+async def execution(reader, writer):
     while True:
-        data = self.request.recv(1024).strip()
+        data = await reader.read(1024)
+        #data = self.request.recv(1024).strip()
         if data == b"exit":
             print("[~] Connection closed.")
             break
@@ -11,14 +13,17 @@ def execution(self):
             command = Popen({data}, stdout=PIPE, stderr=PIPE,shell=True)
             out, err = command.communicate()
             if out.decode() == "":
-                self.request.send(b"ERROR\n"+err)
+                writer.write(b"ERROR\n"+err)
+                #self.request.send(b"ERROR\n"+err)
             elif err.decode() == "" and len(out.decode()) > 1024:
                 max_size = len(out.decode())
-                self.request.send(b"OK\n[!](RESIZED=%i). Change 'Buffersize' to send all message.\n" %max_size+out[:1024])
+                writer.write(b"OK\n[!](RESIZED=%i). Change 'Buffersize' to send all message.\n" %max_size+out[:1024])
+                #self.request.send(b"OK\n[!](RESIZED=%i). Change 'Buffersize' to send all message.\n" %max_size+out[:1024])
             elif err.decode() == "":
-                self.request.send(b"OK\n"+out)
+                writer.write(b"OK\n"+out)
+                #self.request.send(b"OK\n"+out)
 
- 
+
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-hs', type=str, help="Direccion del Host.")
@@ -29,6 +34,7 @@ async def main():
 
     server = await asyncio.start_server(
         execution, args.hs, args.p)
+
     await server.serve_forever()
 
 asyncio.run(main())
